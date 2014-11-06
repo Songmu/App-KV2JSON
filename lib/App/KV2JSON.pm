@@ -13,7 +13,7 @@ sub run {
 
     my @key_values = (kv_from_pipe(), @argv);
 
-    my %hash;
+    my $hash = {};
     for my $kv (@key_values) {
         my ($key, $value) = split /=/, $kv, 2;
         $value = decode_utf8 $value;
@@ -21,10 +21,27 @@ sub run {
         if ($key =~ s/\[\]$//) {
             $value = [split /,/, $value];
         }
-        $hash{$key} = $value;
+
+        my @keys;
+        while ($key =~ s/\[([^\[]*)\]$//) {
+            push @keys, $1;
+        }
+        unshift @keys, $key;
+
+        my $target = $hash;
+        while (@keys) {
+            my $key = shift @keys;
+            if (!@keys) {
+                $target->{$key} = $value;
+                last;
+            }
+            $target->{$key} = {} unless exists $target->{$key};
+            $target = $target->{$key};
+        }
     }
+
     my $coder = JSON::PP->new->ascii(1);
-    print $coder->encode(\%hash);
+    print $coder->encode($hash);
 }
 
 sub kv_from_pipe {

@@ -9,7 +9,7 @@ my %hash;
 if (-p STDIN) {
     my $continue;
     my $kv = '';
-    while (my $line = <>) {
+    while (my $line = <STDIN>) {
         chomp $line;
 
         $kv .= $line;
@@ -22,11 +22,10 @@ if (-p STDIN) {
         }
     }
 }
-else {
-    for my $kv (@ARGV) {
-        my ($key, $value) = split /=/, $kv, 2;
-        $hash{$key} = decode_utf8 $value;
-    }
+
+for my $kv (@ARGV) {
+    my ($key, $value) = split /=/, $kv, 2;
+    $hash{$key} = decode_utf8 $value;
 }
 
 my $coder = JSON::PP->new->ascii(1);

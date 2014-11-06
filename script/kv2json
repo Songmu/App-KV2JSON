@@ -4,26 +4,25 @@ use warnings;
 use JSON::PP;
 use Encode;
 
-my %hash;
+my @key_values;
 
 if (-p STDIN) {
     my $continue;
     my $kv = '';
     while (my $line = <STDIN>) {
         chomp $line;
-
         $kv .= $line;
         $continue = $kv =~ s/\\$// ? 1 : 0;
-
         if (!$continue) {
-            my ($key, $value) = split /=/, $kv, 2;
-            $hash{$key} = $value;
+            push @key_values, $kv;
             $kv = '';
         }
     }
 }
 
-for my $kv (@ARGV) {
+push @key_values, @ARGV;
+my %hash;
+for my $kv (@key_values) {
     my ($key, $value) = split /=/, $kv, 2;
     $hash{$key} = decode_utf8 $value;
 }

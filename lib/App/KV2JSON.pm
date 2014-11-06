@@ -16,7 +16,12 @@ sub run {
     my %hash;
     for my $kv (@key_values) {
         my ($key, $value) = split /=/, $kv, 2;
-        $hash{$key} = decode_utf8 $value;
+        $value = decode_utf8 $value;
+
+        if ($key =~ s/\[\]$//) {
+            $value = [split /,/, $value];
+        }
+        $hash{$key} = $value;
     }
     my $coder = JSON::PP->new->ascii(1);
     print $coder->encode(\%hash);

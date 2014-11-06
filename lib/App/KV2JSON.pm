@@ -5,7 +5,40 @@ use warnings;
 
 our $VERSION = "0.01";
 
+use Encode;
+use JSON::PP;
 
+sub run {
+    my ($class, @argv) = @_;
+
+    my @key_values = (kv_from_pipe(), @argv);
+
+    my %hash;
+    for my $kv (@key_values) {
+        my ($key, $value) = split /=/, $kv, 2;
+        $hash{$key} = decode_utf8 $value;
+    }
+    my $coder = JSON::PP->new->ascii(1);
+    print $coder->encode(\%hash);
+}
+
+sub kv_from_pipe {
+    my @key_values;
+    if (-p STDIN) {
+        my $continue;
+        my $kv = '';
+        while (my $line = <STDIN>) {
+            chomp $line;
+            $kv .= $line;
+            $continue = $kv =~ s/\\$// ? 1 : 0;
+            if (!$continue) {
+                push @key_values, $kv;
+                $kv = '';
+            }
+        }
+    }
+    @key_values;
+}
 
 1;
 __END__

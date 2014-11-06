@@ -1,0 +1,33 @@
+#!perl
+use strict;
+use warnings;
+use JSON::PP;
+use Encode;
+
+my %hash;
+
+if (-p STDIN) {
+    my $continue;
+    my $kv = '';
+    while (my $line = <>) {
+        chomp $line;
+
+        $kv .= $line;
+        $continue = $kv =~ s/\\$// ? 1 : 0;
+
+        if (!$continue) {
+            my ($key, $value) = split /=/, $kv, 2;
+            $hash{$key} = $value;
+            $kv = '';
+        }
+    }
+}
+else {
+    for my $kv (@ARGV) {
+        my ($key, $value) = split /=/, $kv, 2;
+        $hash{$key} = decode_utf8 $value;
+    }
+}
+
+my $coder = JSON::PP->new->ascii(1);
+print $coder->encode(\%hash);

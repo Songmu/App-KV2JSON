@@ -19,7 +19,20 @@ $fatpacked{"App/KV2JSON.pm"} = '#line '.(1+__LINE__).' "'.__FILE__."\"\n".<<'APP
   sub run {
       my ($class, @argv) = @_;
   
-      my @key_values = (kv_from_pipe(), @argv);
+      if ($argv[0] =~ /^--?h(?:elp)?$/) {
+          print_usage();
+      }
+  
+      my @key_values = (_kv_from_pipe(), @argv);
+  
+      my $hash = kv2hash(@key_values);
+  
+      my $coder = JSON::PP->new->ascii(1);
+      print $coder->encode($hash);
+  }
+  
+  sub kv2hash {
+      my @key_values = @_;
   
       my $hash = {};
       for my $kv (@key_values) {
@@ -32,7 +45,7 @@ $fatpacked{"App/KV2JSON.pm"} = '#line '.(1+__LINE__).' "'.__FILE__."\"\n".<<'APP
   
           my @keys;
           while ($key =~ s/\[([^\[]*)\]$//) {
-              push @keys, $1;
+              unshift @keys, $1;
           }
           unshift @keys, $key;
   
@@ -47,12 +60,19 @@ $fatpacked{"App/KV2JSON.pm"} = '#line '.(1+__LINE__).' "'.__FILE__."\"\n".<<'APP
               $target = $target->{$key};
           }
       }
-  
-      my $coder = JSON::PP->new->ascii(1);
-      print $coder->encode($hash);
+      $hash;
   }
   
-  sub kv_from_pipe {
+  sub print_usage {
+      print <<'...';
+  Usage:
+      % kv2json var=baz fruits[]=apple,orange aa[bb]=cc
+      {"fruits":["apple","orange"],"var":"baz","aa":{"bb":"cc"}}
+  ...
+      exit;
+  }
+  
+  sub _kv_from_pipe {
       my @key_values;
       if (-p STDIN) {
           my $continue;
@@ -77,7 +97,7 @@ $fatpacked{"App/KV2JSON.pm"} = '#line '.(1+__LINE__).' "'.__FILE__."\"\n".<<'APP
   
   =head1 NAME
   
-  App::KV2JSON - It's new $module
+  App::KV2JSON - backend class of kv2json
   
   =head1 SYNOPSIS
   
@@ -85,7 +105,7 @@ $fatpacked{"App/KV2JSON.pm"} = '#line '.(1+__LINE__).' "'.__FILE__."\"\n".<<'APP
   
   =head1 DESCRIPTION
   
-  App::KV2JSON is ...
+  App::KV2JSON is backend module of L<kv2json>.
   
   =head1 LICENSE
   
@@ -194,3 +214,34 @@ use warnings;
 
 use App::KV2JSON;
 App::KV2JSON->run(@ARGV);
+
+__END__
+
+=encoding utf-8
+
+=head1 NAME
+
+kv2json - command line utility for building json
+
+=head1 SYNOPSIS
+
+    % kv2json var=baz fruits\[\]=apple,orange aa\[bb\]=cc
+    {"fruits":["apple","orange"],"var":"baz","aa":{"bb":"cc"}}
+
+=head1 DESCRIPTION
+
+kv2json is command line utility for building json.
+
+=head1 LICENSE
+
+Copyright (C) Songmu.
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=head1 AUTHOR
+
+Songmu E<lt>y.songmu@gmail.comE<gt>
+
+=cut
+

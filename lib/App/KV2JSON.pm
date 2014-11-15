@@ -69,7 +69,7 @@ __END__
 
 =head1 NAME
 
-App::KV2JSON - It's new $module
+App::KV2JSON - backend class of kv2json
 
 =head1 SYNOPSIS
 
@@ -77,7 +77,7 @@ App::KV2JSON - It's new $module
 
 =head1 DESCRIPTION
 
-App::KV2JSON is ...
+App::KV2JSON is backend module of L<kv2json>.
 
 =head1 LICENSE
 

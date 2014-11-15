@@ -6,6 +6,7 @@ dst="kv2json"
 
 fatpack trace -Ilib $src
 fatpack packlists-for `cat fatpacker.trace` > fatpacker.packlists
+fatpack tree `cat fatpacker.packlists`
 
 if type perlstrip >/dev/null 2>&1; then
     find fatlib -type f -name '*.pm' | xargs -n1 perlstrip -s

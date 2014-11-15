@@ -15,7 +15,7 @@ kv2json - command line utility for building json
 
 =head1 SYNOPSIS
 
-    % kv2json var=baz fruits\[\]=apple,orange aa\[bb\]=cc
+    % kv2json var=baz fruits[]=apple,orange aa[bb]=cc
     {"fruits":["apple","orange"],"var":"baz","aa":{"bb":"cc"}}
 
 =head1 DESCRIPTION

@@ -1,14 +1,15 @@
 # NAME
 
-App::KV2JSON - backend class of kv2json
+kv2json - command line utility for building json
 
 # SYNOPSIS
 
-    use App::KV2JSON;
+    % kv2json var=baz fruits[]=apple,orange aa[bb]=cc
+    {"fruits":["apple","orange"],"var":"baz","aa":{"bb":"cc"}}
 
 # DESCRIPTION
 
-App::KV2JSON is backend module of [kv2json](https://metacpan.org/pod/kv2json).
+kv2json is command line utility for building json.
 
 # LICENSE
 

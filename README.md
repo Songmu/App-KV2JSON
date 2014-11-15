@@ -1,6 +1,6 @@
 # NAME
 
-App::KV2JSON - It's new $module
+App::KV2JSON - backend class of kv2json
 
 # SYNOPSIS
 
@@ -8,7 +8,7 @@ App::KV2JSON - It's new $module
 
 # DESCRIPTION
 
-App::KV2JSON is ...
+App::KV2JSON is backend module of [kv2json](https://metacpan.org/pod/kv2json).
 
 # LICENSE
 

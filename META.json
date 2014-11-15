@@ -1,5 +1,5 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "backend class of kv2json",
    "author" : [
       "Songmu <y.songmu@gmail.com>"
    ],
@@ -33,6 +33,8 @@
       },
       "develop" : {
          "requires" : {
+            "App::FatPacker" : "0",
+            "Perl::Strip" : "0",
             "Test::CPAN::Meta" : "0",
             "Test::MinimumVersion::Fast" : "0.04",
             "Test::PAUSE::Permissions" : "0.04",
@@ -42,6 +44,7 @@
       },
       "runtime" : {
          "requires" : {
+            "JSON::PP" : "0",
             "perl" : "5.008001"
          }
       },
@@ -52,6 +55,17 @@
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/Songmu/App-KV2JSON/issues"
+      },
+      "homepage" : "https://github.com/Songmu/App-KV2JSON",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/Songmu/App-KV2JSON.git",
+         "web" : "https://github.com/Songmu/App-KV2JSON"
+      }
+   },
    "version" : "0.01",
    "x_authority" : "cpan:SONGMU"
 }

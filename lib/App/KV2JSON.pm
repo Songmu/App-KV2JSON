@@ -84,6 +84,7 @@ sub _kv_from_pipe {
 
 1;
 __END__
+=for stopwords kv2json
 
 =encoding utf-8
 

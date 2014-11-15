@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use App::KV2JSON;
-App::KV2JSON->run(@ARGV);
+print App::KV2JSON->run(@ARGV);
 
 __END__
 

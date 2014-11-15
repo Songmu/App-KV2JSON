@@ -28,7 +28,7 @@ $fatpacked{"App/KV2JSON.pm"} = '#line '.(1+__LINE__).' "'.__FILE__."\"\n".<<'APP
       my $hash = kv2hash(@key_values);
   
       my $coder = JSON::PP->new->ascii(1);
-      print $coder->encode($hash) . "\n";
+      $coder->encode($hash) . "\n";
   }
   
   sub kv2hash {
@@ -52,7 +52,16 @@ $fatpacked{"App/KV2JSON.pm"} = '#line '.(1+__LINE__).' "'.__FILE__."\"\n".<<'APP
           my $target = $hash;
           while (@keys) {
               my $key = shift @keys;
+              my $is_number = $key =~ s/#$//;
               if (!@keys) {
+                  if ($is_number) {
+                      if (ref $value) {
+                          $value = [map { $_ += 0 } @$value]
+                      }
+                      else {
+                          $value += 0;
+                      }
+                  }
                   $target->{$key} = $value;
                   last;
               }
@@ -92,6 +101,7 @@ $fatpacked{"App/KV2JSON.pm"} = '#line '.(1+__LINE__).' "'.__FILE__."\"\n".<<'APP
   
   1;
   __END__
+  =for stopwords kv2json
   
   =encoding utf-8
   
@@ -213,7 +223,7 @@ use strict;
 use warnings;
 
 use App::KV2JSON;
-App::KV2JSON->run(@ARGV);
+print App::KV2JSON->run(@ARGV);
 
 __END__
 
@@ -225,7 +235,7 @@ kv2json - command line utility for building json
 
 =head1 SYNOPSIS
 
-    % kv2json var=baz fruits\[\]=apple,orange aa\[bb\]=cc
+    % kv2json var=baz fruits[]=apple,orange aa[bb]=cc
     {"fruits":["apple","orange"],"var":"baz","aa":{"bb":"cc"}}
 
 =head1 DESCRIPTION

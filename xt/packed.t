@@ -4,7 +4,7 @@ use utf8;
 use Test::More;
 
 SKIP: {
-    skip 1 if $ENV{RELEASE_TESTING};
+    skip 'kv2json is not copied to releasing dist', 1 if $ENV{RELEASE_TESTING};
     is `./kv2json hoge=fuga`, q!{"hoge":"fuga"}!."\n";
 }
 

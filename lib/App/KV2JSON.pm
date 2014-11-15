@@ -11,7 +11,16 @@ use JSON::PP;
 sub run {
     my ($class, @argv) = @_;
 
-    my @key_values = (kv_from_pipe(), @argv);
+    my @key_values = (_kv_from_pipe(), @argv);
+
+    my $hash = kv2hash(@key_values);
+
+    my $coder = JSON::PP->new->ascii(1);
+    print $coder->encode($hash);
+}
+
+sub kv2hash {
+    my @key_values = @_;
 
     my $hash = {};
     for my $kv (@key_values) {
@@ -24,7 +33,7 @@ sub run {
 
         my @keys;
         while ($key =~ s/\[([^\[]*)\]$//) {
-            push @keys, $1;
+            unshift @keys, $1;
         }
         unshift @keys, $key;
 
@@ -39,12 +48,10 @@ sub run {
             $target = $target->{$key};
         }
     }
-
-    my $coder = JSON::PP->new->ascii(1);
-    print $coder->encode($hash);
+    $hash;
 }
 
-sub kv_from_pipe {
+sub _kv_from_pipe {
     my @key_values;
     if (-p STDIN) {
         my $continue;

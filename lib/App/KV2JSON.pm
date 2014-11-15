@@ -11,6 +11,10 @@ use JSON::PP;
 sub run {
     my ($class, @argv) = @_;
 
+    if ($argv[0] =~ /^--?h(?:elp)?$/) {
+        print_usage();
+    }
+
     my @key_values = (_kv_from_pipe(), @argv);
 
     my $hash = kv2hash(@key_values);
@@ -49,6 +53,15 @@ sub kv2hash {
         }
     }
     $hash;
+}
+
+sub print_usage {
+    print <<'...';
+Usage:
+    % kv2json var=baz fruits[]=apple,orange aa[bb]=cc
+    {"fruits":["apple","orange"],"var":"baz","aa":{"bb":"cc"}}
+...
+    exit;
 }
 
 sub _kv_from_pipe {

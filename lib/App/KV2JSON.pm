@@ -44,7 +44,16 @@ sub kv2hash {
         my $target = $hash;
         while (@keys) {
             my $key = shift @keys;
+            my $is_number = $key =~ s/#$//;
             if (!@keys) {
+                if ($is_number) {
+                    if (ref $value) {
+                        $value = [map { $_ += 0 } @$value]
+                    }
+                    else {
+                        $value += 0;
+                    }
+                }
                 $target->{$key} = $value;
                 last;
             }

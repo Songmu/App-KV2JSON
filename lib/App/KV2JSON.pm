@@ -20,7 +20,7 @@ sub run {
     my $hash = kv2hash(@key_values);
 
     my $coder = JSON::PP->new->ascii(1);
-    print $coder->encode($hash);
+    print $coder->encode($hash) . "\n";
 }
 
 sub kv2hash {

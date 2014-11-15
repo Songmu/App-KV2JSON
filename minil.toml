@@ -4,3 +4,5 @@ authority="cpan:SONGMU"
 
 module_maker="ModuleBuildTiny"
 
+[FileGatherer]
+exclude_match = ['^author/.*', '^kv2json$']

@@ -9,6 +9,8 @@
 /.carton/
 /local/
 
+/extlib/
+
 nytprof.out
 nytprof/
 

@@ -11,7 +11,7 @@ use JSON::PP;
 sub run {
     my ($class, @argv) = @_;
 
-    if ($argv[0] =~ /^--?h(?:elp)?$/) {
+    if ($argv[0] && $argv[0] =~ /^--?h(?:elp)?$/) {
         print_usage();
     }
 

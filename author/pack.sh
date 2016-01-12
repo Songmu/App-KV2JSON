@@ -3,11 +3,9 @@ set -e
 set -x
 src="script/kv2json"
 dst="kv2json"
-extlib="extlib"
+fatlib="fatlib"
 
-rm -rf "$extlib"
-cpanm -L "$extlib" JSON::PP
-fatpack-simple "$src" -o "$dst"
-
-perl -i -0 -pe 's{\A#!perl}{#!/usr/bin/env perl}ms' "$dst"
+rm -rf "$fatlib"
+cpanm -L "$fatlib" JSON::PP
+fatpack-simple --shebang '#!/usr/bin/env perl' "$src" -o "$dst"
 chmod +x $dst

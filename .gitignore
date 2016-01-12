@@ -9,7 +9,7 @@
 /.carton/
 /local/
 
-/extlib/
+/fatlib/
 
 nytprof.out
 nytprof/

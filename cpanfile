@@ -6,5 +6,5 @@ on 'test' => sub {
 };
 
 on 'develop' => sub {
-    requires 'App::FatPacker::Simple';
+    requires 'App::FatPacker::Simple', '0.04';
 };

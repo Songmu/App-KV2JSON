@@ -6,6 +6,5 @@ on 'test' => sub {
 };
 
 on 'develop' => sub {
-    requires 'Perl::Strip';
-    requires 'App::FatPacker';
+    requires 'App::FatPacker::Simple';
 };

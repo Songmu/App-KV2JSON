@@ -3,14 +3,11 @@ set -e
 set -x
 src="script/kv2json"
 dst="kv2json"
+extlib="extlib"
 
-fatpack trace -Ilib $src
-fatpack packlists-for `cat fatpacker.trace` > fatpacker.packlists
-fatpack tree `cat fatpacker.packlists`
+rm -rf "$extlib"
+cpanm -L "$extlib" JSON::PP
+fatpack-simple "$src" -o "$dst"
 
-if type perlstrip >/dev/null 2>&1; then
-    find fatlib -type f -name '*.pm' | xargs -n1 perlstrip -s
-fi
-
-(echo "#!/usr/bin/env perl"; fatpack file; cat $src ) > $dst
+perl -i -0 -pe 's{\A#!perl}{#!/usr/bin/env perl}ms' "$dst"
 chmod +x $dst

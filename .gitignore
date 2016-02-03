@@ -9,6 +9,8 @@
 /.carton/
 /local/
 
+/fatlib/
+
 nytprof.out
 nytprof/
 
